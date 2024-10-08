@@ -1,0 +1,108 @@
+{
+  "tasks":[
+    { "dataset": {
+      "description":"Create dataset.",
+      "auth": "user",
+      "dataset": "shape_shifter"
+    }},
+    { "vertexai_api":{
+      "description":"generate images using imagen.",
+      "auth":"user",
+      "location":"us-central1",
+      "model":{
+        "class":"vertexai.preview.vision_models.ImageGenerationModel",
+        "name":"imagegeneration@006",
+        "function":"edit_image",
+        "type":"pretrained",
+        "resize":[1024,1024]
+      },
+      "destination":{
+        "local":"docs/generated"
+      },  
+      "kwargs_remote": { 
+        "bigquery":{
+          "dataset": "shape_shifter",
+          "query": "
+WITH COUNTRIES AS (
+  SELECT
+    ARRAY( SELECT value FROM UNNEST(all_tags) WHERE key = 'name:en' LIMIT 1) [OFFSET(0)] AS country,
+    ST_ASGEOJSON(ST_CENTROID(geometry)) AS geometry
+  FROM `bigquery-public-data.geo_openstreetmap.planet_features_multipolygons`
+  WHERE ('boundary', 'administrative') IN (SELECT (key, value) FROM UNNEST(all_tags)) 
+  AND ('admin_level', '2') IN (SELECT (key, value) FROM UNNEST(all_tags))
+  AND 'name:en' IN (SELECT key FROM UNNEST(all_tags))
+  AND ST_AREA(geometry) > 26500000000 /* keep countries larger than map marker */
+),  
+    
+SCENES AS (
+  SELECT * FROM UNNEST(ARRAY[
+    STRUCT(
+      'Counter' AS scene,
+      'Include only the origial lotion bottles in the photo. The products are standing on a kitchen counter top from COUNTRY. On one side of the photo is a small decorative counter top plant from COUNTRY. The background is a wall decorated in the traditional colors and themes of COUNTRY. The photo was taken by a professional photographer for a luxury home magazine cover. The season is summer.  The lighting is white and diffuse.' AS prompt
+    ),
+    STRUCT(
+      'Garden' AS scene,
+      'Include only this one lotion bottle in the photo. The product is standing in a calm garden representing the traditional colors and theme of COUNTRY.  The photo was taken by a professional photographer for a luxury home magazine cover. The season is summer.  The time of day is the golden hour.' AS prompt
+    ),
+    STRUCT(
+    'Flowers' AS scene,
+      'Include only this one lotion bottle in the photo. Replace the background with a few scattered flowers and petals representing the traditional colors and culture of COUNTRY.  The flowers are vigrant and alive.  The photo was taken by a professional photographer for a luxury home magazine cover. The light is white and diffuse with a spa look.' AS prompt
+    )
+  ]) AS scene
+),  
+
+IMAGES AS (
+SELECT * EXCEPT(scenes) FROM (
+  SELECT * FROM UNNEST(ARRAY[
+    STRUCT(
+      'Tube' AS feature,
+      'docs/images/C_Balm 0F1A1112.jpg' AS image_path,
+      ['Flowers'] AS scenes
+    ),
+    STRUCT(
+      'Peaches' AS feature,
+      'docs/images/C_Balm 0F1A1180.jpg' AS image_path,
+      ['Counter'] AS scenes
+    ),
+    STRUCT(
+    'Garden' AS feature,
+      'docs/images/C_Balm 0F1A1069.jpg' AS image_path,
+      ['Garden', 'Counter'] AS scenes
+    )
+  ])
+), UNNEST(scenes) AS scene
+)
+
+SELECT * FROM (
+  SELECT
+    CONCAT(
+      'CBalm',
+      ' - ', feature,
+      ' - ', IMAGES.scene,
+      ' - ', REPLACE(country, '/', ''),
+      ' - Product'
+    ) AS uri,
+    STRUCT(
+      image_path AS base_image,
+      'product-image' AS edit_mode,
+      'foreground' AS mask_mode,
+      'reposition' AS product_position,
+      'image/jpeg' AS output_mime_type,
+      92 AS compression_quality,
+      'dont_allow' AS person_generation,
+      1 AS number_of_images,
+      5 AS guidance_scale,
+      REPLACE(prompt, 'COUNTRY', country) AS prompt
+    ) AS parameters
+  FROM IMAGES
+  LEFT JOIN SCENES
+  ON IMAGES.scene=SCENES.scene
+  CROSS JOIN COUNTRIES
+)
+ORDER BY uri ASC
+          "
+        } 
+      }   
+    }}  
+  ]
+}

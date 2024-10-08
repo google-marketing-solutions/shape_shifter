@@ -1,0 +1,648 @@
+{
+  "tasks": [
+    {
+      "dataset": {
+        "description": "Create Google Ads dataset.",
+        "auth": "user",
+        "dataset": "gads"
+      }
+    },
+    {
+      "google_api": {
+        "description": "Ad_Campaigns",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT campaign.id,campaign.name, campaign.status, campaign.serving_status FROM campaign ORDER BY campaign.id"
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "campaign",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "status",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "servingStatus",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_Campaign"
+          }
+        }
+      }
+    },
+    {
+      "google_api": {
+        "description": "Ad_Group",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT ad_group.id, ad_group.name, ad_group.status,ad_group.type FROM ad_group"
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "adGroup",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "status",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "type",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_Group"
+          }
+        }
+      }
+    },
+    {
+      "google_api": {
+        "description": "Geo Constants",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT geo_target_constant.resource_name, geo_target_constant.id, geo_target_constant.canonical_name, geo_target_constant.country_code, geo_target_constant.name FROM geo_target_constant"
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "geoTargetConstant",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "resourceName",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "countryCode",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "canonicalName",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Geo_Constants_Lookup"
+          }
+        }
+      }
+    },
+    {
+      "google_api": {
+        "description": "Demographic Events",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT detailed_demographic.id, detailed_demographic.name, detailed_demographic.parent  FROM detailed_demographic"
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg",
+          "login-customer-id": "1122318749"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "DetailedDemographic",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "parent",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_detailed_demographic"
+          }
+        }
+      }
+    },
+    {
+      "google_api": {
+        "description": "Life Events",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT life_event.id, life_event.name, life_event.parent, life_event.launched_to_all FROM life_event"
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg",
+          "login-customer-id": "1122318749"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "lifeEvent",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "parent",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "launchedToAll",
+                    "type": "BOOLEAN",
+                    "mode": "NULLABLE"
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_life_event"
+          }
+        }
+      }
+    },
+    {
+      "google_api": {
+        "description": "Ad Group Criterion",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT ad_group_criterion.criterion_id, ad_group.id, ad_group_criterion.ad_group, ad_group_criterion.display_name, ad_group_criterion.age_range.type, ad_group_criterion.gender.type,ad_group_criterion.negative, ad_group_criterion.income_range.type, ad_group_criterion.status, ad_group_criterion.type, ad_group_criterion.system_serving_status FROM ad_group_criterion WHERE ad_group_criterion.type != 'KEYWORD' and ad_group_criterion.negative = FALSE "
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg",
+          "login-customer-id": "1122318749"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "adGroup",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  }
+                ]
+              },
+              {
+                "name": "adGroupCriterion",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "criterionId",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "adGroup",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "type",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "displayName",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "status",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "negative",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "systemServingStatus",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_ad_group_criterion"
+          }
+        }
+      }
+    },
+    {
+      "google_api": {
+        "description": "Campaign Criterion",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT campaign_criterion.campaign, campaign_criterion.criterion_id, campaign_criterion.display_name, campaign_criterion.location.geo_target_constant, campaign_criterion.location_group, campaign.id, campaign_criterion.status FROM campaign_criterion "
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg",
+          "login-customer-id": "1122318749"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "campaign",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  }
+                ]
+              },
+              {
+                "name": "campaignCriterion",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "criterionId",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "status",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "campaign",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "displayName",
+                    "type": "STRING",
+                    "mode": "NULLABLE"
+                  },
+                  {
+                    "name": "location",
+                    "type": "RECORD",
+                    "mode": "NULLABLE",
+                    "fields": [
+                      {
+                        "name": "geoTargetConstant",
+                        "type": "STRING",
+                        "mode": "NULLABLE"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_campaign_criterion"
+          }
+        }
+      }
+    },
+     {
+      "google_api": {
+        "description": "AdGroup and Campaign Relationship",
+        "documentation": "https://developers.google.com/google-ads/api/rest/reference/rest/v15/customers.googleAds/search",
+        "auth": "user",
+        "api": "googleads",
+        "version": "v15",
+        "function": "customers.googleAds.search",
+        "kwargs": {
+          "customerId": "5254016423",
+          "body": {
+            "query": "SELECT ad_group.campaign, ad_group.id, ad_group.name, ad_group.status, campaign.id, campaign.status FROM ad_group "
+          }
+        },
+        "headers": {
+          "developer-token": "z27QEhvZe2mjjYFmwwfskg",
+          "login-customer-id": "1122318749"
+        },
+        "iterate": true,
+        "results": {
+          "print": false,
+          "bigquery": {
+            "schema": [
+              {
+                "name": "campaign",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                   {
+                    "name": "status",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  }
+                ]
+              },
+              {
+                "name": "adGroup",
+                "type": "RECORD",
+                "mode": "REQUIRED",
+                "fields": [
+                  {
+                    "name": "id",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                  {
+                    "name": "name",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  },
+                   {
+                    "name": "status",
+                    "type": "STRING",
+                    "mode": "REQUIRED"
+                  }
+    
+                ]
+              }
+            ],
+            "dataset": "gads",
+            "table": "GoogleAds_Ad_Campaign_AdGroup"
+          }
+        }
+      }
+    },
+    {
+      "bigquery": {
+        "description": "Targetting Settings - Create Staging Table 1",
+        "auth": "user",
+        "dataset": "gads",
+        "from": {
+          "query": "
+          SELECT 
+          tAdGroups.adGroup.id AS adGroupId,
+          tAdGroups.adGroup.name AS adGroupName,
+          tAdGroups.adGroup.status AS adGroupStatus,
+          tAdGroups.adGroup.type AS adGroupType,
+          tadGroupCriterion.adGroupCriterion.criterionId AS adGroupCriterionId,
+          tadGroupCriterion.adGroupCriterion.type AS adGroupCriterionType,
+          tadGroupCriterion.adGroupCriterion.displayName AS adGroupCriterionName
+          FROM
+          (SELECT * 
+          FROM `cse-hack-23-shape-shift-svl.gads.GoogleAds_Ad_Group` 
+          WHERE adGroup.status = 'ENABLED') tAdGroups
+          JOIN cse-hack-23-shape-shift-svl.gads.GoogleAds_Ad_ad_group_criterion AS tadGroupCriterion
+          ON tAdGroups.adGroup.id =  tadGroupCriterion.adGroup.id
+          WHERE tadGroupCriterion.adGroupCriterion.status = 'ENABLED'
+           AND tadGroupCriterion.adGroupCriterion.systemServingStatus = 'ELIGIBLE'"
+        },
+        "to": {
+          "dataset": "gads",
+          "table": "TargetingStagingTable1"
+        }
+      }
+    },
+    {
+      "bigquery": {
+        "description": "Targetting Settings - Create Staging table 2.",
+        "auth": "user",
+        "dataset": "gads",
+        "from": {
+          "query": "
+          SELECT 
+          T1.*,
+          T2.DetailedDemographic.name
+          FROM `cse-hack-23-shape-shift-svl.gads.TargetingStagingTable1` AS T1
+          LEFT JOIN `cse-hack-23-shape-shift-svl.gads.GoogleAds_Ad_detailed_demographic` AS T2
+          ON T1.AdGroupCriterionName = T2.DetailedDemographic.id 
+          AND T1.AdGroupCriterionType = 'UNKNOWN'        
+          "
+        },
+        "to": {
+          "dataset": "gads",
+          "table": "TargetingStagingTable2"
+        }
+      }
+    },
+    {
+      "bigquery": {
+        "description": "Targetting Settings - Create Staging table 3.",
+        "auth": "user",
+        "dataset": "gads",
+        "from": {
+          "query": "
+          SELECT 
+          CampaignCriterion.*,
+          AdGroupCampaign.adGroupId,
+          AdGroupCampaign.adGroupName,
+          GeoConstants.geoTargetConstant.name AS geoName,
+          GeoConstants.geoTargetConstant.countryCode,
+          GeoConstants.geoTargetConstant.canonicalName AS geoCanonicalName
+          FROM
+          (SELECT 
+          T1.campaign.id AS campaignId,
+          T1.campaignCriterion.location.geoTargetConstant AS geoTargetConstant
+          FROM `cse-hack-23-shape-shift-svl.gads.GoogleAds_Ad_campaign_criterion` AS T1
+          WHERE T1.campaignCriterion.status = 'ENABLED'
+          AND T1.campaignCriterion.location.geoTargetConstant IS NOT NULL) AS CampaignCriterion
+          INNER JOIN `cse-hack-23-shape-shift-svl.gads.GoogleAds_Geo_Constants_Lookup` AS GeoConstants
+          ON  GeoConstants.geoTargetConstant.resourceName = CampaignCriterion.geoTargetConstant
+          INNER JOIN 
+          (
+          SELECT 
+          T2.campaign.id AS campaignId,
+          T2.adGroup.id AS adGroupId,
+          T2.adGroup.Name AS adGroupName 
+          FROM
+          `cse-hack-23-shape-shift-svl.gads.GoogleAds_Ad_Campaign_AdGroup` AS T2
+          WHERE T2.campaign.status = 'ENABLED' 
+          AND T2.adGroup.status = 'ENABLED'
+          ) AS AdGroupCampaign
+          ON CampaignCriterion.campaignId = AdGroupCampaign.campaignId
+          ORDER BY adGroupId
+          "
+        },
+        "to": {
+          "dataset": "gads",
+          "table": "TargetingStagingTable3"
+        }
+      }
+    },
+    {
+      "bigquery": {
+        "description": "Targetting Settings - Create Final table.",
+        "auth": "user",
+        "dataset": "gads",
+        "from": {
+          "query": "
+          SELECT T1.*,
+          T2.adGroupType,
+          T2.adGroupCriterionId,
+          T2.adGroupCriterionType,
+          T2.adGroupCriterionName,
+          T2.name AS adGroupDetailedDemographicTargeting
+          FROM `cse-hack-23-shape-shift-svl.gads.TargetingStagingTable3` AS T1
+          INNER JOIN `cse-hack-23-shape-shift-svl.gads.TargetingStagingTable2` AS T2
+          ON T1.adGroupId = T2.adGroupId
+          "
+        },
+        "to": {
+          "dataset": "gads",
+          "table": "GoogleAds_Targeting"
+        }
+      }
+    }
+  ]
+}

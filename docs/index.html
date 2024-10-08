@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Shape Shifter Demo</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+  <script src="ads.js"></script>
+  <style>
+
+    body { margin: 0; padding: 0; }
+
+    #fade_images {
+      position: absolute; 
+      top: 0px;
+      right: -50vh;
+      width: 83vh;
+      height: 100vh;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 100%;
+    }
+
+    #fade_vorato {
+      position: absolute;
+      top: -30vh;
+      left: -30vh;
+      width: 55vh;
+      height: 55vh;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 100%;
+    }
+
+    #fade_cbalm {
+      position: absolute;
+      bottom: -30vh;
+      left: -30vh;
+      width: 55vh;
+      height: 55vh;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 100%;
+    }
+
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+    .marker {
+      background-size: cover;
+      width: 150px;
+      height: 150px;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    .mapboxgl-popup {
+      max-width: 300px;
+    }
+
+    #vorato {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 20vh;
+      height: 20vh;
+      border-width: 0px;
+      border-radius: 15px;
+      background-size: cover;
+      background-position: center;
+      background-image: url('images/Vorato0007 998.jpg');
+    }
+
+    #cbalm {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      width: 20vh;
+      height: 20vh;
+      border-width: 0px;
+      border-radius: 15px;
+      background-size: cover; 
+      background-position: center; 
+      background-image: url('images/C_Balm 0F1A1112.jpg');
+    }
+
+    div.images_all {
+      position: absolute;
+      visibility: hidden;
+      top: 100px;
+      right: 30px;
+      height: 950px;
+      width: 400px;
+    }
+
+    div.images_all a {
+      margin: 0px; 
+      width: 200px;
+      height: 200px;
+      border-width: 0px;
+      border-radius: 15px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    div.images_all :nth-child(1) {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+    div.images_all :nth-child(2) {
+      position: absolute;
+      top: 150px;
+      right: 150px;
+    }
+
+    div.images_all :nth-child(3) {
+      position: absolute;
+      top: 300px;
+      right: 0px;
+    }
+
+    div.images_all :nth-child(4) {
+      position: absolute;
+      top: 450px;
+      right: 150px;
+    }
+
+    div.images_all :nth-child(5) {
+      position: absolute;
+      top: 600px;
+      right: 0px;
+    }
+
+    div.images_all :nth-child(6) {
+      position: absolute;
+      top: 750px;
+      right: 150px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="fade_images"></div>
+  <div id="fade_vorato"></div>
+  <div id="fade_cbalm"></div>
+
+  <a href="?product=vorato&scene=Street&feature=White%20Side"><div id="vorato"></div></a>
+  <a href="?product=cbalm"><div id="cbalm"></div></a>
+
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2Vuam9yYSIsImEiOiJjbHdzMXJyZjkwNnlrMmpxMGFtbmFrM3lrIn0.vR1b8KkrNEJuJ2GyJXKp1g';
+  
+    const parameters = new URLSearchParams(window.location.search);
+
+    // Originals for comparison
+    const icons = {
+      'vorato':{
+        'Red Tailgate':'images/Vorato0007 542.jpg',
+        'Red Back':'images/Vorato0007 547.jpg',
+        'Red Front':'images/Vorato0007 572.jpg',
+        'Blue Side':'images/Vorato0007 641.jpg',
+        'Blue Front':'images/Vorato0007 876.jpg',
+        'White Side':'images/Vorato0007 998.jpg'
+      },
+      'cbalm':{
+        'Tube':'images/C_Balm 0F1A1112.jpg',
+        'Peaches':'images/C_Balm 0F1A1180.jpg',
+        'Garden':'images/C_Balm 0F1A1069.jpg'
+      }
+    }
+
+    // Default the product
+    var product = parameters.get('product');
+    if (product === null) {
+      product = 'vorato';
+    }
+
+    // Reduce the Scene list
+    var scene = parameters.get('scene');
+    var scenes = new Set();
+    ads[product].forEach(ad => {
+      scenes.add(ad.scene);
+    })
+    scenes = [...scenes].sort(); 
+    if (scene === null) {
+      scene = scenes[0];
+    }
+
+    // Reduce the Feature list
+    var feature = parameters.get('feature');
+    var features = new Set();
+    ads[product].forEach(ad => {
+      if (ad.scene == scene) {
+        features.add(ad.feature);
+      }
+    })
+    features = [...features].sort(); 
+    if (feature === null) {
+      feature = features[0];
+    }
+
+    document.getElementById(product).style.backgroundImage = `url("${icons[product][feature]}")`; 
+
+    // Create containers for all the countries
+    var countries = new Set();
+    ads[product].forEach(ad => {
+      countries.add(ad.country);
+    })
+    countries = [...countries].sort(); 
+    countries.forEach(country => {
+      const el = document.createElement('div');
+      el.className = 'images_all';
+      el.id = `images_${country.replace(' ', '_')}`;
+      document.body.appendChild(el); 
+    })
+    document.getElementById(`images_${ads[product][0].country.replace(' ', '_')}`).style.visibility = 'visible';
+
+    // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v11',
+      center: ads[product][0].coordinates,
+      boxZoom: false,
+      maxZoom: 5.5,
+      minZoom: 2.5,
+      zoom: 4
+    });
+  
+    // For playing guessing game
+    var game_countries = [];
+    var game_country = null;
+
+    ads[product].forEach(ad => {
+      if (ad.scene == scene && ad.feature == feature) {
+        const el = document.createElement('div');
+        el.id = ad.id;
+        el.className = "marker";
+        el.style.backgroundImage = 'url("' + ad.image + '")'; 
+  
+        // Create Marker Element
+        const marker = new mapboxgl.Marker(el).setLngLat(ad.coordinates).addTo(map);
+  
+        // Create Popup Content
+        const popupContent = `<img src="${ad.image}" style="width:100%;height:auto"/><h1>${ad.country}</h1><strong>${ad.scene} - ${ad.feature}</strong><br>${ad.prompt}`;
+  
+        // Create Popup and Attach to Marker
+        //https://docs.google.com/presentation/d/1Jr2yaiB5JFxBRldX6BKiNy3I0Qms3mrlliVDffLDcz0/edit#slide=id.g3e7957e5fa_0_110
+        const popup = new mapboxgl.Popup({ maxWidth: '300px', offset: 25, closeButton: false }).setHTML(popupContent);
+        marker.setPopup(popup);
+  
+        popup.on('open', () => {
+          document.querySelectorAll('.images_all').forEach(element => {
+            element.style.visibility = 'hidden';
+          });
+          document.getElementById(`images_${ad.country.replace(' ', '_')}`).style.visibility = 'visible';
+        });
+
+        // add location to game
+        game_countries.push({
+          'country':ad.country,
+          'images':`images_${ad.country.replace(' ', '_')}`,
+          'marker':marker
+        });
+
+      } else {
+        const el = document.createElement('a');
+        el.href = `?product=${encodeURIComponent(product)}&scene=${encodeURIComponent(ad.scene)}&feature=${encodeURIComponent(ad.feature)}`; 
+        el.textContent = '';
+        el.style.backgroundImage = 'url("' + ad.image + '")'; 
+        document.getElementById(`images_${ad.country.replace(' ', '_')}`).appendChild(el); 
+      }
+    });
+
+    // https://docs.mapbox.com/mapbox-gl-js/example/globe-spin/
+    const secondsPerRevolution = 180;
+    let userInteracting = false;
+    let spinEnabled = true;
+
+    function spinGlobe() {
+      if (spinEnabled && !userInteracting) {
+        const zoom = map.getZoom();
+        //let distancePerSecond = 360 / secondsPerRevolution;
+
+        // at 2.5 zoom spin 120, and at 5.5 zoom spin 600
+        // the line formula is then
+        let distancePerSecond = 360 / (140 * zoom - 230);
+
+        const center = map.getCenter();
+        center.lng -= distancePerSecond;
+        map.easeTo({center, duration: 1000, easing: (n) => n });
+      }
+    }
+
+    // Pause spinning on interaction
+    map.on('mousedown', () => {
+      userInteracting = true;
+    });
+
+    // Restart spinning the globe when interaction is complete
+    map.on('mouseup', () => {
+      userInteracting = false;
+      spinGlobe();
+    });
+
+    map.on('dragend', () => {
+      userInteracting = false;
+      spinGlobe();
+    });
+    map.on('pitchend', () => {
+      userInteracting = false;
+      spinGlobe();
+    });
+    map.on('rotateend', () => {
+      userInteracting = false;
+      spinGlobe();
+    });
+
+    map.on('moveend', () => {
+      spinGlobe();
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 's') {
+        spinEnabled = !spinEnabled;
+        spinGlobe();
+      }
+      if (event.key === 'r') {
+        game_country = game_countries[(Math.floor(Math.random() * game_countries.length))];
+        document.querySelectorAll('.images_all').forEach(element => {
+          element.style.visibility = 'hidden';
+        });
+        document.getElementById(game_country.images).style.visibility = 'visible';
+      }
+      if (event.key === 'a') {
+        if (game_country != null) {
+          spinEnabled = false;
+          game_countries.forEach(gc => {
+            gc.marker.getPopup().remove();
+          })
+          const coords = game_country.marker.getLngLat();
+          map.flyTo({center: [coords.lng, coords.lat]});
+          game_country.marker.togglePopup();
+        }
+      }
+    });
+
+    spinGlobe();
+
+  </script>
+</body>
+</html>

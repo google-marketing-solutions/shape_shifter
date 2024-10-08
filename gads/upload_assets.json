@@ -1,0 +1,150 @@
+{
+  "tasks": [
+    {
+      "dataset": {
+        "description": "Generate Google Ads Text",
+        "auth": "user",
+        "dataset": "cse_hackathon"
+      }
+    },
+    {
+      "vertexai_api": {
+        "auth": "user",
+        "description": "generate text using BISON.",
+        "location": "us-central1",
+        "model": {
+          "class": "vertexai.preview.language_models.TextGenerationModel",
+          "name": "text-bison-32k@002",
+          "function": "predict",
+          "type": "pretrained"
+        },
+        "destination": {
+          "bigquery": {
+            "dataset": "cse_hackathon",
+            "table": "Gads_VERTEX_Text_Data_Bison",
+            "schema": [
+              {
+                "name": "uri",
+                "type": "STRING",
+                "mode": "REQUIRED"
+              },
+              {
+                "name": "text",
+                "type": "STRING",
+                "mode": "REQUIRED"
+              }
+            ]
+          }
+        },
+        "kwargs_remote": {
+          "bigquery": {
+            "dataset": "cse_hackathon",
+            "query": "
+SELECT
+  campaignId || '|' || adGroupId || '|' || adGroupName || '|' || 
+  IF(
+    T1.adGroupCriterionType = 'AGE_RANGE',
+    CONCAT(
+      'people of age range ',
+       T1.adGroupCriterionName
+      , ' years'),
+    '') || '| ' ||   
+    IF(
+    T1.geoCanonicalName IS NOT NULL,
+    CONCAT(' location is in ', T1.geoCanonicalName),
+    '') AS uri,
+  STRUCT(
+    0 AS temperature,
+    1024 AS max_output_tokens,
+    0.8 AS top_p,
+    40 AS top_k,
+    ARRAY_TO_STRING(
+      [
+        'Write an ad copy for a Google Search text ad that targets',
+        IF(
+    T1.adGroupCriterionType = 'AGE_RANGE',
+    CONCAT(
+      'people of age range ',
+       T1.adGroupCriterionName
+      , ' years'),
+    ''),
+        IF(
+          T1.geoCanonicalName IS NOT NULL,
+          CONCAT(
+            'and location is in ',
+            T1.geoCanonicalName),
+          ''),
+        'The copy is for the following product:Shoes. ',
+      'The first thing you will write are headlines without using any function words and using only content words that is Nouns, Verbs, Adjectives and Adverbs. You will need to write three headlines for each ad, which will appear together at the top of your ad.',
+      'Headlines are designed to be short, punchy, and to catch the attention of your potential customers. They dont need to phrases and sentenences can be just a combination of words. They should entice your audience and convince them to read the rest of your ad. But be brief: You have a limited number of characters for each headline (30 characters).',
+      'Your three headlines should work together, building on each other to say something about what your customers are searching for (without repeating themselves). For example, if your small business sells sunglasses, your three headlines might say:',
+      '“Sunglasses For Sale”',
+      '“Find Your Perfect Frames”',
+      '“Shop Our Collection!”',
+     ' These three headlines work well because they clearly explain what you are selling, while also encouraging potential customers to come explore your website.',
+      'Pro tip: It is important to differentiate your headlines so they dont repeat content, for example you would want to avoid using something like 1. “Cool sunglasses for sale” 2. “Stylish sunglasses for sale” 3. “Shop our stylish sunglasses.” Also, capitalizing the first letter of ever',
+      'word has proven to drive stronger results.',
+      'Next you’ll write two descriptions. You only have to write two descriptions for each ad to run below your headlines.', 
+      'Descriptions give you the chance to really show off what makes your small business special.',
+      'Like headlines, descriptions have a character limit though they’re longer than headlines (90 characters), so you have more room to be creative when talking about the business.', 
+      'Here are three examples of descriptions you might use if you’re selling sunglasses:',
+      '“Our unique wooden sunglasses are designed and crafted right here in Los Angeles.”',
+      '“Over 50 styles to choose from, plus free shipping and returns on all orders.”',
+      '“Shop our Holiday Sale to find special discounts on our most popular styles.”',
+      'These are great descriptions because they not only show your audience what’s different about your business and products,',
+      ' but they also give customers an incentive to shop with you. And they play off of the headlines above, too. ',     
+      ' Finally, dont forget to provide a list of suggested keywords for the ad',
+      'Make sure to add # at the end of every headline and descriptions so it is easier for us to break the output',
+      'Make sure to not add # or any special characters in the Suggested Keywords',
+      'Use English language only',
+      'headline1: max 30 characters',
+      'headline2: max 30 characters',
+      'headline3: max 30 characters',
+      'description1: max 90 characters',
+      'description2: max 90 characters',
+      'suggested keywords: list of max 5 recommended keywords',
+      'Here is an example response:',
+      '**Headline 1:** Comprehensive Insurance #',
+      '**Headline 2:** Protect Yourself on a Budget #',
+      '**Headline 3:** Get Your Free Quote Today #',
+      '**Description 1:** Get affordable & trustworthy insurance. 10% discount on all online quotes! #',
+      '**Description 2:** Easily compare insurance plans side-by-side in just a few seconds. #',
+      '**Suggested Keywords:** PSVR2, PlayStation VR, virtual reality, gaming, console'],
+      ' ',
+      '') AS prompt)
+    AS parameters
+FROM `cse-hack-23-shape-shift-svl.gads.GoogleAds_Targeting` AS T1
+WHERE T1.adGroupCriterionType = 'AGE_RANGE'
+
+
+          "
+          }
+        }
+      }
+    },
+     {
+      "bigquery": {
+        "description": "Targetting Settings - Create Staging table 3.",
+        "auth": "user",
+        "dataset": "gads",
+        "from": {
+          "query": "
+          SELECT 
+           split(uri, '|')[offset(0)] as campaignId,
+           split(uri, '|')[offset(1)] as adGroupId,
+           split(uri, '|')[offset(2)] as adGroupName,
+           split(uri, '|')[offset(3)] as ageTargetingOption,
+           split(uri, '|')[offset(4)] as locationTargetingOption,
+           text
+           FROM `cse-hack-23-shape-shift-svl.cse_hackathon.Gads_VERTEX_Text_Data_Bison`
+           ORDER BY campaignId, adGroupId
+          "
+        },
+        "to": {
+          "dataset": "cse_hackathon",
+          "table": "Gads_text_copies"
+        }
+      }
+    }
+  ]
+}
