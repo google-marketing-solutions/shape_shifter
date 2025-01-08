@@ -6,8 +6,8 @@ Rapidly generate text ads and ad backgrounds for your product using **Google Ads
 
 # About 
 
-Shape Shifter showcases the ability to replace product backgrounds
-accurately using Google AI.  It is useful for:
+Shape Shifter showcases the ability to replace product backgrounds accurately
+using Google AI.  It is useful for:
 
 1. Replace advertising image backgrounds or text copy based on targeting such as:
   1. Geography or points of interest.
@@ -51,6 +51,17 @@ The process is designed to be an end to end demo of how to integrate an AI proce
    1. press **s**: controls spin on and off  
    2. press **r**: (party game) selects random place and show images ( ask users to guess location)  
    3. press **a**: (party game) travels to answer and shows country  
+
+The prompts for each generated image are shown when you click on them on the globe.
+
+## Demo Mini Game
+
+To make things fun you can play a guess the background game.
+
+1. Press **s** to stop or start the spin.
+1. Press **r** to get a random set of images on the right.
+1. Have people guess the country or targeting option.
+1. Press **a** to get the answer.
 
 ## Customize The Demo
 
