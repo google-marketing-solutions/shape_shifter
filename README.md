@@ -1,6 +1,10 @@
-# About 
+# Shape Shifter
+
+Rapidly generate text ads and ad backgrounds for your product using Google Ands and DV360 targeting data.
 
 [![Shape Shifter Demo](docs/shape_shifter_demo.jpg)](https://google-marketing-solutions.github.io/shape_shifter/)
+
+# About 
 
 Shape Shifter showcases the ability to replace product backgrounds
 accurately using Google AI.  It is useful for:
