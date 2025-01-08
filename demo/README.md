@@ -1,4 +1,8 @@
-1. Input Images
+# Demo Source Code
+
+This is only for running [the demo](https://google-marketing-solutions.github.io/shape_shifter/) in case you want to create your own.
+
+### Input Images
 
 images/ - source images.
 
@@ -6,7 +10,7 @@ Store all images used as source for the AI here.
 These images are also used in the demo to show the original
 These images are used in the query, BQFlow will read them for the AI calls.
 
-2. AI Workflows For Each Product
+### AI Workflows For Each Product
 
 cbalm.json - workflow for this product.
 vorato.json - workflow for this product.
@@ -29,7 +33,7 @@ WHERE uri NOT IN (
 
 Modify the workflow if the generative AI crashes or you want to redo a bunch of images.
 
-3. Generate Map Data
+### Generate Map Data
 
 ads.py - reads the generated/ folder for images with a naming convention and assembles the javascript map configuration.
 countries.py - used by ads.py, a list of countries imported from bigquery, used to map GPS coordinates.

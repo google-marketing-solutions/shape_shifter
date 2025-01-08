@@ -1,6 +1,33 @@
+# About 
+
+Shape Shifter showcases the ability to replace product backgrounds
+accurately using Google AI.  It is useful for:
+
+1. Replace advertising image backgrounds or text copy based on targeting such as:
+  1. Geography or points of interest.
+  2. Audience.
+  3. Time of day.
+  4. Device type.
+  5. Or any other source of data.
+
+There are two parts to this code:
+
+1. **Demo** - Shows a cool globe of various products rendered with different backgrounds base don country.
+1. **Workflow** - The logic that connects to **DV360** and/or **Google Ads** and generates ads from targeting.
+
 # Demo
 
-The process is designed to be an end  to end demo of how to integrate an AI process into both products.
+[View the demo here.](https://google-marketing-solutions.github.io/shape_shifter/) The coolest parts of the demo are:
+
+1. The product images are integrated flawlessly.
+1. The houses for the car background look like they're from that country.
+1. The AI correctly picks up the fauna and tile patterns of each country.
+1. The products are rendered correctly on shelves.
+1. Every image is first pass AI generated, we did not edit it, imagine what you can do with more variety.
+
+[![Shape Shifter Demo](https://google-marketing-solutions.github.io/shape_shifter/shape_shifter_demo.jpg)](https://google-marketing-solutions.github.io/shape_shifter/)
+
+The process is designed to be an end to end demo of how to integrate an AI process into both products.
 
 1. Process:
    1. A set of product images is used 
@@ -21,9 +48,9 @@ The process is designed to be an end  to end demo of how to integrate an AI proc
    2. press **r**: (party game) selects random place and show images ( ask users to guess location)  
    3. press **a**: (party game) travels to answer and shows country  
 
-## Generate The Demo
+## Customize The Demo
 
-The demo is already running but if you need to modify it, here is how:
+Pitch your clients with a custom product demo, [here is the source](https://github.com/google-marketing-solutions/shape_shifter/tree/main/demo) and how:
 
 ```
 python ../bqflow/run.py demo/vorato.json -u ~user.json -p gcp-project -v
@@ -57,7 +84,7 @@ python ../bqflow/run.py gads/upload_assets.json -u ~user.json -p gcp-project -v
 
 # Requirements
 1. [Google Cloud Project](https://cloud.google.com)
-     * [Vertex AI API](https://console.cloud.google.com/marketplace/product/google/aiplatform.googleapis.com)\n",
+     * [Vertex AI API](https://console.cloud.google.com/marketplace/product/google/aiplatform.googleapis.com)
 1. [BQFlow](https://github.com/google-marketing-solutions/bqflow)
 
 # License
