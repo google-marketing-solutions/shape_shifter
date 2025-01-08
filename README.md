@@ -1,6 +1,6 @@
 # Shape Shifter
 
-Rapidly generate text ads and ad backgrounds for your product using Google Ands and DV360 targeting data.
+Rapidly generate text ads and ad backgrounds for your product using **Google Ads** and **DV360** targeting.
 
 [![Shape Shifter Demo](docs/shape_shifter_demo.jpg)](https://google-marketing-solutions.github.io/shape_shifter/)
 
