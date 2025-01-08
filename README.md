@@ -1,5 +1,7 @@
 # About 
 
+[![Shape Shifter Demo](docs/shape_shifter_demo.jpg)](https://google-marketing-solutions.github.io/shape_shifter/)
+
 Shape Shifter showcases the ability to replace product backgrounds
 accurately using Google AI.  It is useful for:
 
@@ -24,8 +26,6 @@ There are two parts to this code:
 1. The AI correctly picks up the fauna and tile patterns of each country.
 1. The products are rendered correctly on shelves.
 1. Every image is first pass AI generated, we did not edit it, imagine what you can do with more variety.
-
-[![Shape Shifter Demo](https://google-marketing-solutions.github.io/shape_shifter/shape_shifter_demo.jpg)](https://google-marketing-solutions.github.io/shape_shifter/)
 
 The process is designed to be an end to end demo of how to integrate an AI process into both products.
 
@@ -84,7 +84,7 @@ python ../bqflow/run.py gads/upload_assets.json -u ~user.json -p gcp-project -v
 
 # Requirements
 1. [Google Cloud Project](https://cloud.google.com)
-     * [Vertex AI API](https://console.cloud.google.com/marketplace/product/google/aiplatform.googleapis.com)
+1. [Vertex AI API](https://console.cloud.google.com/marketplace/product/google/aiplatform.googleapis.com)
 1. [BQFlow](https://github.com/google-marketing-solutions/bqflow)
 
 # License
