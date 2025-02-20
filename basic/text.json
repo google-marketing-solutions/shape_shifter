@@ -1,0 +1,102 @@
+{
+  "prompt": {
+    "headlines": [
+       "You are a Google Ads expert specializing in writing high-performing headlines for the automotive industry.",
+       "Your task is to generate 15 distinct Google Ads headlines for a car being sold in STATE.",
+       "The car is described as follows: PRODUCT.",
+       "The target audience is described as follows: AUDIENCE.",
+       "The headlines MUST adhere to the following Google Ads guidelines:",
+       "*  **Character Limit:** Each headline must be 30 characters or less, including spaces.",
+       "*  **No Exclamation Points:** Headlines cannot contain exclamation points.",
+       "*  **No ALL CAPS:**  Do not use all capital letters for entire words (acronyms are okay).",
+       "*  **Focus:** Headlines should be compelling, relevant, and highlight key selling points of the classic car. Consider using keywords related to classic cars, the specific make/model/year, condition, location, and potential buyer motivations.",
+       "*  **Variety:** Provide a variety of headline styles, including:",
+       "      * Direct statements about the car.",
+       "      * Questions.",
+       "      * Benefit-oriented statements.",
+       "      * Location-specific phrases.",
+       "Format the response using a Python list of strings in the format: ['headline...', 'headline...',]"
+    ],
+    "descriptions": [
+      "You are a Google Ads expert specializing in writing high-performing ad copy for the automotive industry. Your task is to generate 5 distinct Google Ads descriptions for a car being sold in STATE. The car is described as follows: PRODUCT.",
+      "The descriptions MUST adhere to the following Google Ads guidelines:",
+      "* **Character Limit:** Each description must be 90 characters or less, *including* spaces.",
+      "* **Focus:** Descriptions should be concise, benefit-oriented, and relevant to potential buyers in STATE. Highlight key features, selling points, and any special offers.",
+      "* **Call to Action:** Include a strong call to action (e.g., 'Shop Now,' 'Get a Quote,' 'Learn More,' 'Visit Us'). *However*, make sure the call to action *and* the rest of the text fit within the 90-character limit. Don't include a call to action if it makes the description go over the limit.",
+      "* **No promotional phrases related to prices, promotions, and financing:** These are best left to ad extensions.",
+      "* **Avoid excessive capitalization:** ONLY capitalize the first letter and proper nouns.",
+      "* **Variety:** Provide a variety of description styles.",
+      "Format the response using a Python list of strings in the format: ['headline...', 'headline...',]"
+    ]
+  },
+  "pitches":{
+    "Classic": {
+      "prompt": "Classic car enthusiasts are a passionate and knowledgeable marketing audience driven by a deep appreciation for automotive history, craftsmanship, and the unique driving experience that older vehicles offer. They are often, though not exclusively, older males with mid-to-high incomes, viewing classic cars not just as transportation but as investments, collectibles, and extensions of their personal identity. These individuals are often community-oriented, participating in car clubs and shows, and may be hands-on with maintenance and restoration, valuing originality and authenticity. Marketing to this group requires detailed, accurate information, high-quality visuals, and messaging that taps into their nostalgia, desire for uniqueness, and the emotional connection they have with these vehicles, often found within specialized online communities, publications, and events."
+    }, 
+    "Sports": { 
+      "prompt": "Modern sports car enthusiasts are a performance-driven marketing audience seeking cutting-edge technology, exhilarating speed, and aggressive, contemporary styling. This demographic, typically comprised of younger to middle-aged professionals with higher disposable income, values innovation, precision engineering, and the status associated with owning a high-performance vehicle. They are digitally savvy, actively engaging with automotive content online, researching performance specs, and following automotive influencers. Marketing to this audience requires showcasing a car's technological advancements, performance statistics (horsepower, 0-60 times, handling capabilities), and modern design features through high-quality digital content, social media engagement, and experiences that emphasize speed, agility, and technological superiority. They are reachable through targeted online advertising, automotive publications (both digital and print), track day events, and partnerships with technology and lifestyle brands."
+    },
+    "Commuter": {
+      "prompt":"Commuter car buyers are a practical and value-conscious marketing audience primarily seeking reliable, fuel-efficient, and affordable transportation for their daily work travel. This demographic typically spans a wide age range and income levels, prioritizing functionality, safety, and low running costs over luxury or performance. They value features like good gas mileage, comfortable seating, ample cargo space, user-friendly technology (like Bluetooth and smartphone integration), and strong safety ratings. Marketing to this audience should emphasize practicality, dependability, fuel economy, affordability (including financing options), and features that enhance the daily commute, such as comfortable interiors and convenient technology. They are reachable through channels like online car buying websites, local dealership advertising, radio ads during commute times, and targeted social media campaigns focused on practicality and value."
+    }
+  },
+  "products":[
+    {
+      "product": "Vorato",
+      "description": "This is a well-maintained, pre-owned white 2017 Ford Fiesta SE hatchback. It features a sporty, compact design with stylish silver alloy wheels and shows approximately 45,000 miles on the odometer. This particular Fiesta is equipped with a fuel-efficient 1.6L 4-cylinder engine and an automatic transmission, making it a great choice for city driving and commuting. It's presented in excellent condition, with a clean title and full service history available. Asking price: $12,500. Located in Los Angeles, CA.",
+      "pitches": ["Commuter"]
+    }, {
+      "product": "Corvette",
+      "description": "For sale is a stunning example of American automotive history: a 1967 Chevrolet Corvette Sting Ray coupe. This classic beauty boasts a vibrant red exterior with a meticulously maintained black interior, showing only 58,000 miles. Under the hood, you'll find a powerful, numbers-matching 327 cubic inch V8 engine paired with a smooth-shifting 4-speed manual transmission, offering an authentic and exhilarating driving experience. This Sting Ray features the highly desirable side pipes, adding to its iconic look and sound. A true collector's item, this Corvette is in excellent condition, garaged, and ready to turn heads. Located in Scottsdale, AZ, and offered at $75,000.",
+      "pitches": ["Classic", "Sports"]
+    }
+  ],
+  "targeting": [
+    { "STATE": "Alabama", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Alaska", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Arizona", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Arkansas", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "California", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Colorado", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Connecticut", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Delaware", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Florida", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Georgia", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Hawaii", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Idaho", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Illinois", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Indiana", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Iowa", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Kansas", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Kentucky", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Louisiana", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Maine", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Maryland", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Massachusetts", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Michigan", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Minnesota", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Mississippi", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Missouri", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Montana", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Nebraska", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Nevada", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "New Hampshire", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "New Jersey", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "New Mexico", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "New York", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "North Carolina", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "North Dakota", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Ohio", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Oklahoma", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Oregon", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Pennsylvania", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Rhode Island", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "South Carolina", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "South Dakota", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Tennessee", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Texas", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Utah", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Vermont", "AUDIENCE": "First Time Buyer" },
+    { "STATE": "Virginia", "AUDIENCE": "First Time Buyer" }
+  ]
+}

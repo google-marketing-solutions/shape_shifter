@@ -1,0 +1,81 @@
+{
+  "prompt": "You are a car photographer selling cars to people and are creating photos that will appeal to customers.",
+  "scenes":{
+    "Landscape": {
+      "prompt": "Include only this one car in the photo. The car parked in a beautiful landscape in STATE. The photo is from an exotic luxury travel magazine. The terrain under the car matches the terrain in the background. The photo has an adventure mood. The sky is sunny and clear. The car is the only object in the foreground, create distance around the car. The photo was taken using a wide angle lens by a professional photographer for an AUDIENCE magazine cover. The season is summer.  The time of day is the golden hour. All four wheels are touching the ground."
+    }, 
+    "Road": { 
+      "prompt": "Include only this one car in the photo. The car is parked in the center of a highway road with popular scenery from STATE. The road is visible. The car is parked in the middle of the road aligned to the road. The road looks new with a dark surface plus median and highway divider markings. The scenery in the distance and foreground are from STATE. The photo has a calm mood. The sky is sunny and clear. The car is the only object in the foreground, create distance around the car. The photo was taken using a wide angle lens by a professional photographer for an AUDIENCE magazine cover. The season is summer.  The time of day is the golden hour. All four wheels are touching the road."
+    },
+    "Street": { 
+      "prompt": "Include only this one car in the photo. Make the car look like it is parked on the street in front of a single neat, stylish, and cheerful house in the US state of STATE that would appeal to the AUDIENCE persona from that US state. The house looks like it is from the cover of a luxury magazine in STATE. The perspective is front view. All wheels are touching the road."
+    }
+  },
+  "images":[
+    {
+      "image": "Red Tailgate",
+      "file": "../docs/images/Vorato0007 542.jpg",
+      "scenes": ["Road", "Landscape"]
+    }, {
+      "image": "Red Back",
+      "file": "../docs/images/Vorato0007 547.jpg",
+      "scenes": ["Road", "Landscape"]
+    }, {
+      "image": "Red Front",
+      "file": "../docs/images/Vorato0007 572.jpg",
+      "scenes": ["Road", "Landscape"]
+    }, {
+      "image": "White Side",
+      "file": "../docs/images/Vorato0007 998.jpg",
+      "scenes": ["Street"]
+    }
+  ],
+  "targeting": [
+    { "STATE": "Alabama", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Alaska", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Arizona", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Arkansas", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "California", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Colorado", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Connecticut", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Delaware", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Florida", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Georgia", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Hawaii", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Idaho", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Illinois", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Indiana", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Iowa", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Kansas", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Kentucky", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Louisiana", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Maine", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Maryland", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Massachusetts", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Michigan", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Minnesota", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Mississippi", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Missouri", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Montana", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Nebraska", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Nevada", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "New Hampshire", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "New Jersey", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "New Mexico", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "New York", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "North Carolina", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "North Dakota", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Ohio", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Oklahoma", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Oregon", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Pennsylvania", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Rhode Island", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "South Carolina", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "South Dakota", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Tennessee", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Texas", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Utah", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Vermont", "AUDIENCE": "Classic Car Collector" },
+    { "STATE": "Virginia", "AUDIENCE": "Classic Car Collector" }
+  ]
+}

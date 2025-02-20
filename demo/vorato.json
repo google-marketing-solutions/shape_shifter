@@ -1,113 +1,111 @@
-{
-  "tasks":[
-    { "dataset": {
-      "description":"Create dataset.",
-      "auth": "user",
-      "dataset": "shape_shifter"
-    }},
-    { "vertexai_api":{
-      "description":"generate images using imagen.",
-      "auth":"user",
-      "location":"us-central1",
-      "model":{
-        "class":"vertexai.preview.vision_models.ImageGenerationModel",
-        "name":"imagegeneration@006",
-        "function":"edit_image",
-        "type":"pretrained",
-        "resize":[1024,1024]
-      },
-      "destination":{
-        "local":"docs/generated"
-      },  
-      "kwargs_remote": { 
-        "bigquery":{
-          "dataset": "shape_shifter",
-          "query": "
-WITH COUNTRIES AS (
-  SELECT
-    ARRAY( SELECT value FROM UNNEST(all_tags) WHERE key = 'name:en' LIMIT 1) [OFFSET(0)] AS country,
-    ST_ASGEOJSON(ST_CENTROID(geometry)) AS geometry
-  FROM `bigquery-public-data.geo_openstreetmap.planet_features_multipolygons`
-  WHERE ('boundary', 'administrative') IN (SELECT (key, value) FROM UNNEST(all_tags)) 
-  AND ('admin_level', '2') IN (SELECT (key, value) FROM UNNEST(all_tags))
-  AND 'name:en' IN (SELECT key FROM UNNEST(all_tags))
-  AND ST_AREA(geometry) > 26500000000 /* keep countries larger than map marker */
-),  
-    
-SCENES AS (
-  SELECT * FROM UNNEST(ARRAY[
-    STRUCT(
-      'Landscape' AS scene,
-      'Include only this one car in the photo. The car parked in a beautiful landscape in COUNTRY. The photo is from an exotic luxury travel magazine. The terrain under the car matches the terrain in the background. The photo has an adventure mood. The sky is sunny and clear. The car is the only object in the foreground, create distance around the car. The photo was taken using a wide angle lens by a professional photographer for an luxury travel magazine cover. The season is summer.  The time of day is the golden hour.' AS prompt
-    ),
-    STRUCT(
-      'Farm' AS scene,
-      'Include only this one car in the photo. The car is parked in the center of a farm field dirt road with native crops from COUNTRY. The dirt road is visible and goes diagonally from the bottom right corner to the middle left side of the photo. The low crops in the distance and foreground are indigenous to COUNTRY. In the distance are large indigenous trees. The photo has a calm mood. The lower left side of the photo has some low crops. The sky is sunny and clear. The car is the only object in the foreground, create distance around the car. The photo was taken using a wide angle lens by a professional photographer for an luxury travel magazine cover. The season is summer.  The time of day is the golden hour.' AS prompt
-    ),
-    STRUCT(
-    'Street' AS scene,
-    'Include only this one car in the photo. Make the car look like it is parked on the street in front of a single neat, stylish, and cheerful house in the country of COUNTRY that would appeal to the LIFESTYLE persona from that country. The house looks like it is from the cover of a luxury magazine in COUNTRY. The perspective is front view.' AS prompt
-    )
-  ]) AS scene
-),  
-
-IMAGES AS (
-SELECT * EXCEPT(scenes) FROM (
-  SELECT * FROM UNNEST(ARRAY[
-    STRUCT(
-      'Red Tailgate' AS feature,
-      'docs/images/Vorato0007 542.jpg' AS image_path,
-      ['Farm', 'Landscape'] AS scenes
-    ),
-    STRUCT(
-    'Red Back' AS feature,
-      'docs/images/Vorato0007 547.jpg' AS image_path,
-      ['Farm', 'Landscape'] AS scenes
-    ),
-    STRUCT(
-      'Red Front' AS feature,
-      'docs/images/Vorato0007 572.jpg' AS image_path,
-      ['Farm', 'Landscape'] AS scenes
-    ),
-    STRUCT(
-      'White Side' AS feature,
-      'docs/images/Vorato0007 998.jpg' AS image_path,
-      ['Street'] AS scenes
-    )
-  ])
-), UNNEST(scenes) AS scene
-)
-
-SELECT * FROM (
-  SELECT
-    CONCAT(
-      'Vorato',
-      ' - ', feature,
-      ' - ', IMAGES.scene,
-      ' - ', REPLACE(country, '/', ''),
-      ' - Product'
-    ) AS uri,
-    STRUCT(
-      image_path AS base_image,
-      'product-image' AS edit_mode,
-      'foreground' AS mask_mode,
-      'reposition' AS product_position,
-      'image/jpeg' AS output_mime_type,
-      92 AS compression_quality,
-      'dont_allow' AS person_generation,
-      1 AS number_of_images,
-      5 AS guidance_scale,
-      REPLACE(prompt, 'COUNTRY', country) AS prompt
-    ) AS parameters
-  FROM IMAGES
-  LEFT JOIN SCENES
-  ON IMAGES.scene=SCENES.scene
-  CROSS JOIN COUNTRIES
-)
-ORDER BY uri ASC
-          "
-        } 
-      }   
-    }}  
-  ]
-}
+{ "tasks":[
+  { "dataset": {
+    "description":"Create dataset.",
+    "auth": "user",
+    "dataset": "shape_shifter"
+  }},
+  { "vertexai_api":{
+    "description":"Generate images using imagen.",
+    "auth":"user",
+    "location":"us-central1",
+    "model":{
+      "class":"vertexai.preview.vision_models.ImageGenerationModel",
+      "name":"imagegeneration@006",
+      "function":"edit_image",
+      "type":"pretrained",
+      "resize":[1024,1024]
+    },
+    "destination":{
+      "local":"docs/generated"
+    },  
+    "kwargs_remote": { 
+      "bigquery":{
+        "dataset": "shape_shifter",
+        "query": "
+          WITH COUNTRIES AS (
+            SELECT
+              ARRAY( SELECT value FROM UNNEST(all_tags) WHERE key = 'name:en' LIMIT 1) [OFFSET(0)] AS country,
+              ST_ASGEOJSON(ST_CENTROID(geometry)) AS geometry
+            FROM `bigquery-public-data.geo_openstreetmap.planet_features_multipolygons`
+            WHERE ('boundary', 'administrative') IN (SELECT (key, value) FROM UNNEST(all_tags)) 
+            AND ('admin_level', '2') IN (SELECT (key, value) FROM UNNEST(all_tags))
+            AND 'name:en' IN (SELECT key FROM UNNEST(all_tags))
+            AND ST_AREA(geometry) > 26500000000 /* keep countries larger than map marker */
+          ),  
+              
+          SCENES AS (
+            SELECT * FROM UNNEST(ARRAY[
+              STRUCT(
+                'Landscape' AS scene,
+                'Include only this one car in the photo. The car parked in a beautiful landscape in COUNTRY. The photo is from an exotic luxury travel magazine. The terrain under the car matches the terrain in the background. The photo has an adventure mood. The sky is sunny and clear. The car is the only object in the foreground, create distance around the car. The photo was taken using a wide angle lens by a professional photographer for an luxury travel magazine cover. The season is summer.  The time of day is the golden hour.' AS prompt
+              ),
+              STRUCT(
+                'Farm' AS scene,
+                'Include only this one car in the photo. The car is parked in the center of a farm field dirt road with native crops from COUNTRY. The dirt road is visible and goes diagonally from the bottom right corner to the middle left side of the photo. The low crops in the distance and foreground are indigenous to COUNTRY. In the distance are large indigenous trees. The photo has a calm mood. The lower left side of the photo has some low crops. The sky is sunny and clear. The car is the only object in the foreground, create distance around the car. The photo was taken using a wide angle lens by a professional photographer for an luxury travel magazine cover. The season is summer.  The time of day is the golden hour.' AS prompt
+              ),
+              STRUCT(
+              'Street' AS scene,
+              'Include only this one car in the photo. Make the car look like it is parked on the street in front of a single neat, stylish, and cheerful house in the country of COUNTRY that would appeal to the LIFESTYLE persona from that country. The house looks like it is from the cover of a luxury magazine in COUNTRY. The perspective is front view.' AS prompt
+              )
+            ]) AS scene
+          ),  
+          
+          IMAGES AS (
+            SELECT * EXCEPT(scenes) FROM (
+              SELECT * FROM UNNEST(ARRAY[
+                STRUCT(
+                  'Red Tailgate' AS feature,
+                  'docs/images/Vorato0007 542.jpg' AS image_path,
+                  ['Farm', 'Landscape'] AS scenes
+                ),
+                STRUCT(
+                'Red Back' AS feature,
+                  'docs/images/Vorato0007 547.jpg' AS image_path,
+                  ['Farm', 'Landscape'] AS scenes
+                ),
+                STRUCT(
+                  'Red Front' AS feature,
+                  'docs/images/Vorato0007 572.jpg' AS image_path,
+                  ['Farm', 'Landscape'] AS scenes
+                ),
+                STRUCT(
+                  'White Side' AS feature,
+                  'docs/images/Vorato0007 998.jpg' AS image_path,
+                  ['Street'] AS scenes
+                )
+              ])
+            ), UNNEST(scenes) AS scene
+          )
+          
+          SELECT * FROM (
+            SELECT
+              CONCAT(
+                'Vorato',
+                ' - ', feature,
+                ' - ', IMAGES.scene,
+                ' - ', REPLACE(country, '/', ''),
+                ' - Product'
+              ) AS uri,
+              STRUCT(
+                image_path AS base_image,
+                'product-image' AS edit_mode,
+                'foreground' AS mask_mode,
+                'reposition' AS product_position,
+                'image/jpeg' AS output_mime_type,
+                92 AS compression_quality,
+                'dont_allow' AS person_generation,
+                1 AS number_of_images,
+                5 AS guidance_scale,
+                REPLACE(prompt, 'COUNTRY', country) AS prompt
+              ) AS parameters
+            FROM IMAGES
+            LEFT JOIN SCENES
+            ON IMAGES.scene=SCENES.scene
+            CROSS JOIN COUNTRIES
+          )
+          ORDER BY uri ASC
+        "
+      } 
+    }   
+  }}  
+]}

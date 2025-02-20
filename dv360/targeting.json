@@ -1,329 +1,262 @@
-{
-  "tasks": 
-  [
-    { 
-      "dataset": 
-      {
-        "description":"Create dataset.",
+{ "tasks": [
+  { "dataset": {
+    "description":"Create dataset.",
+    "auth": "user",
+    "dataset": "Targeting"
+  }},
+  { "bigquery": {
+    "description":"Connect control sheet to table.",
+    "auth":"user",
+    "from": {
+      "sheet":"https://docs.google.com/spreadsheets/d/1nzYY9bzl73Iv7k0-f0T5-aE2nKaQ8X6RUTs_hZcqJX4/",
+      "tab":"Control",
+      "range":"A1:M",
+      "header":true
+    },
+    "to": {
+      "dataset":"Targeting",
+      "table":"SHEET_Control",
+      "schema": [
+        { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
+        { "name": "LineItem", "type": "STRING", "mode": "NULLABLE" }
+      ]
+    }
+  }},
+  { "google_api": {
+    "description":"Pull lineitem Name.",
+    "api": "displayvideo",
+    "version": "v3",
+    "auth": "user",
+    "function": "advertisers.lineItems.get",
+    "iterate": false,
+    "kwargs_remote": {
+      "bigquery": {
         "auth": "user",
-        "dataset": "Targeting"
-      }
-    },
-    { 
-      "bigquery":
-      {
-        "description":"Connect control sheet to table.",
-        "auth":"user",
-        "from":
-        {
-          "sheet":"https://docs.google.com/spreadsheets/d/1nzYY9bzl73Iv7k0-f0T5-aE2nKaQ8X6RUTs_hZcqJX4/",
-          "tab":"Control",
-          "range":"A1:M",
-          "header":true
-        },
-        "to":
-        {
-          "dataset":"Targeting",
-          "table":"SHEET_Control",
-          "schema":
-          [
-            { "name": "Advertiser", "type": "STRING", "mode": "NULLABLE" },
-            { "name": "LineItem", "type": "STRING", "mode": "NULLABLE" }
-          ]
-        }
-      }
-    },
-    { 
-      "google_api": 
-      {
-        "description":"Pull lineitem Name.",
-        "api": "displayvideo",
-        "version": "v2",
-        "auth": "user",
-        "function": "advertisers.lineItems.get",
-        "iterate": false,
-        "kwargs_remote": 
-        {
-          "bigquery": 
-          {
-            "auth": "user",
-            "dataset": "Targeting",
-            "query": 
-              "SELECT DISTINCT 
-                advertiserId, 
-                lineItemId
-              FROM 
-              (
-                SELECT 
-                  REGEXP_EXTRACT(Advertiser, r' - (\\w+)$') AS advertiserId, 
-                  REGEXP_EXTRACT(LineItem, r' - (\\w+)$') AS lineItemId
-                FROM `.SHEET_Control`
-                WHERE LineItem IS NOT NULL
-                AND Advertiser IS NOT NULL
-              )"
-          }
-        },
-        "results": 
-        {
-          "bigquery": 
-          {
-            "auth": "user",
-            "dataset": "Targeting",
-            "table": "DV360_LineItems"
-          }
-        }
-      }
-    },
-    { 
-      "google_api": 
-      {
-        "description":"Pull lineitem targeting.",
-        "api": "displayvideo",
-        "version": "v2",
-        "auth": "user",
-        "function": "advertisers.lineItems.bulkListAssignedTargetingOptions",
-        "iterate": true,
-        "kwargs_remote": 
-        {
-          "bigquery": 
-          {
-            "auth": "user",
-            "dataset": "Targeting",
-            "query": 
-              "SELECT
-                advertiserId,
-                ARRAY_AGG(lineItemId) OVER(PARTITION BY advertiserId ORDER BY num ASC RANGE BETWEEN CURRENT ROW AND 49 FOLLOWING) AS lineItemIds,
-                'targetingType=TARGETING_TYPE_GEO_REGION OR targetingType=TARGETING_TYPE_AGE_RANGE OR targetingType=TARGETING_TYPE_LANGUAGE' AS filter,
-                5000 AS pageSize
-              FROM 
-              (
-                SELECT
-                  advertiserId,
-                  lineItemId,
-                  ROW_NUMBER() OVER(PARTITION BY advertiserId ORDER BY lineItemId ASC) AS num,
-                FROM 
-                (
-                  SELECT
-                    REGEXP_EXTRACT(Advertiser, r' - (\\w+)$') AS advertiserId,
-                    REGEXP_EXTRACT(LineItem, r' - (\\w+)$') AS lineItemId
-                  FROM `.SHEET_Control`
-                  WHERE LineItem IS NOT NULL
-                  AND Advertiser IS NOT NULL
-                )
-              )
-              QUALIFY MOD(num, 50) = 1"
-          }
-        },
-        "append":
-        [
-          { 
-            "name": "advertiserId", 
-            "type": "INTEGER", 
-            "mode": "REQUIRED" 
-          }
-        ],
-        "results": 
-        {
-          "bigquery": 
-          {
-            "auth": "user",
-            "dataset": "Targeting",
-            "table": "DV360_LineItems_Targeting"
-          }
-        }
-      }
-    },
-    { 
-      "bigquery":
-      {
-        "description":"Create final View.",
-        "auth":"user",
         "dataset": "Targeting",
-        "from":
-        {
-          "query":
-            "WITH intermediateTable AS 
-            (
-              WITH ConsolidatedTable AS 
-              (
-                SELECT t1.displayName as lineItem,
-                t1.lineItemId,
-                t1.advertiserId,
-                t1.campaignId,
-                t2.assignedTargetingOption.ageRangeDetails.ageRange, 
-                t2.assignedTargetingOption.geoRegionDetails.displayName as geo,
-                t2.assignedTargetingOption.languageDetails.displayName as language
-                FROM `Targeting.DV360_LineItems` t1 
-                JOIN `Targeting.DV360_LineItems_Targeting` t2 
-                ON t1.lineItemId=t2.lineItemId
-              ),
-
-              tmp AS 
-              (
-                SELECT DISTINCT 
-                  t1.lineItem, 
-                  t1.lineItemId, 
-                  t1.advertiserId, 
-                  t1.campaignId, 
-                  COALESCE(NULLIF(t1.ageRange,''), t2.ageRange) as age_range, 
-                  COALESCE(NULLIF(t1.geo,''), t2.geo) as geo
-                FROM ConsolidatedTable t1 
-                JOIN ConsolidatedTable t2 
-                ON t1.lineItem=t2.lineItem
-              )
-
-              SELECT DISTINCT 
-                t3.lineItem, 
-                t3.lineItemId, 
-                t3.advertiserId, 
-                t3.campaignId, 
-                t3.age_range, 
-                t3.geo, 
-                COALESCE(NULLIF(t4.language,''), t4.language) as language
-              FROM tmp t3 
-              JOIN `ConsolidatedTable` t4 
-              ON t3.lineItem=t4.lineItem
-            )
-
-            SELECT DISTINCT lineItem, lineItemId, advertiserId, campaignId, age_range, geo
-            FROM `intermediateTable`
-            WHERE geo IS NOT NULL
-            AND (age_range LIKE '%18_24%'
-            OR age_range LIKE '%45_54%')
-            AND GEO NOT IN ('Switzerland','New York, United States', 'New York, NY, United States')"
-        },
-        "to":
-        {
-          "dataset":"Targeting", 
-          "table":"FinalTable"
-        }     
+        "query": 
+          "SELECT DISTINCT 
+            advertiserId, 
+            lineItemId
+          FROM (
+            SELECT 
+              REGEXP_EXTRACT(Advertiser, r' - (\\w+)$') AS advertiserId, 
+              REGEXP_EXTRACT(LineItem, r' - (\\w+)$') AS lineItemId
+            FROM `.SHEET_Control`
+            WHERE LineItem IS NOT NULL
+            AND Advertiser IS NOT NULL
+          )
+        "
       }
     },
-    { 
-      "vertexai_api":
-      {
-        "auth":"user",
-        "description":"generate text using gemini.",
-        "location":"us-central1",
-        "model":{
-          "class":"vertexai.preview.generative_models.GenerativeModel",
-          "name":"gemini-pro",
-          "function":"generate_content",
-          "type":"pretrained"
-        },
-        "destination":{
-          "bigquery":{
-            "dataset": "Targeting",
-            "table": "VERTEX_Text_Data_Gemini",
-            "schema":[
-              { "name": "URI", "type": "STRING", "mode": "REQUIRED" },
-              { "name": "Text", "type": "STRING", "mode": "REQUIRED" }
-            ]
-          }
-        },
-        "kwargs_remote": 
-        { 
-          "bigquery":
-          {
-            "dataset": "Targeting",
-            "query": 
-              "SELECT 
-              CONCAT(advertiserId, '_', campaignId, '_', lineItemId, IF(age_range IS NOT NULL, CONCAT('_', REPLACE(age_range, 'AGE_RANGE_', ''), ''), ''), IF(geo IS NOT NULL, CONCAT('_', geo, ''), '')) AS uri,
-              STRUCT
-              (
-                ARRAY_TO_STRING(
-                [
-                  'In less than 50 characters, generate an extremely short one sentence ad copy for ', 
-                  lineItem,
-                  IF(FinalTable.age_range IS NOT NULL, CONCAT(' targeting people in the age range ', FinalTable.age_range),''),
-                  IF(FinalTable.geo IS NOT NULL, CONCAT(' living in ', FinalTable.geo),''),
-                  '. Make sure that your response is very short and contains less than 50 characters. Do not include hashtags or specific age groups in the ad copy. ',
-                  'If the ad copy contains more than 50 characters, re-generate a new one with less than 50 characters.'
-                ], 
-                ' ', '') AS contents
-              ) AS parameters
-            FROM `FinalTable`"
-          }
-        }
-      }
-    },
-    { 
-      "vertexai_api":
-      {
-        "description":"Generate images.",
-        "auth":"user",
-        "location":"us-central1",
-        "model":
-        {
-          "class":"vertexai.preview.vision_models.ImageGenerationModel",
-          "name":"imagegeneration@005",
-          "function":"generate_images",
-          "type":"pretrained",
-          "temperature": 5
-        },
-        "destination":
-        {
-          "drive":"1RKuL2BMHZRtAVc0VWDis5cfLswFMectT"
-        },
-        "kwargs_remote": 
-        { 
-          "bigquery":
-          {
-            "dataset": "Targeting",
-            "query": 
-              "SELECT 
-                CONCAT(advertiserId, '_', campaignId, '_', lineItemId, IF(age_range IS NOT NULL, CONCAT('_', REPLACE(age_range, 'AGE_RANGE_', ''), ''), ''), IF(geo IS NOT NULL, CONCAT('_', geo, ''), '')) AS uri,
-                STRUCT
-                (
-                  1 AS number_of_images,
-                  2 AS seed,
-                  ARRAY_TO_STRING(
-                  [
-                    'An outdoors photorealistic picture of a ', 
-                    lineItem,
-                    ' with unique colors taken from far ',
-                    IF(FinalTable.geo IS NOT NULL, CONCAT('with a cool background of ', FinalTable.geo), '.')
-                  ], 
-                  ' ', '') AS prompt
-                ) AS parameters
-              FROM `FinalTable`"
-          }
-        }
-      }
-    },
-    {
-      "upload_assets": 
-      {
+    "results": {
+      "bigquery": {
         "auth": "user",
-        "upload": 
-        {
-            "drive_url": "https://drive.google.com/corp/drive/folders/1RKuL2BMHZRtAVc0VWDis5cfLswFMectT"
-        },
-        "destination": 
-        {
-          "bigquery": 
-          {
-            "dataset": "assets",
-            "table": "assets",
-            "schema": 
-            [
-              { "name": "name", "type": "STRING", "mode": "REQUIRED" },
-              { "name": "path", "type": "STRING", "mode": "REQUIRED" },
-              { "name": "media_id", "type": "STRING", "mode": "REQUIRED" }
-            ]
-          }
-        },
-        "kwargs_remote": 
-        { 
-          "bigquery":
-          {
-            "dataset": "Targeting",
-            "query": 
-              "SELECT URI, Text
-              FROM `VERTEX_Text_Data_Gemini`"
-          }
-        }
+        "dataset": "Targeting",
+        "table": "DV360_LineItems"
       }
     }
-  ]
-}         
+  }},
+  { "google_api": {
+    "description":"Pull lineitem targeting.",
+    "api": "displayvideo",
+    "version": "v3",
+    "auth": "user",
+    "function": "advertisers.lineItems.bulkListAssignedTargetingOptions",
+    "iterate": true,
+    "kwargs_remote": {
+      "bigquery": {
+        "auth": "user",
+        "dataset": "Targeting",
+        "query": 
+          "SELECT
+            advertiserId,
+            ARRAY_AGG(lineItemId) OVER(PARTITION BY advertiserId ORDER BY num ASC RANGE BETWEEN CURRENT ROW AND 49 FOLLOWING) AS lineItemIds,
+            'targetingType=TARGETING_TYPE_GEO_REGION OR targetingType=TARGETING_TYPE_AGE_RANGE OR targetingType=TARGETING_TYPE_LANGUAGE' AS filter,
+            5000 AS pageSize
+          FROM (
+            SELECT
+              advertiserId,
+              lineItemId,
+              ROW_NUMBER() OVER(PARTITION BY advertiserId ORDER BY lineItemId ASC) AS num,
+            FROM (
+              SELECT
+                REGEXP_EXTRACT(Advertiser, r' - (\\w+)$') AS advertiserId,
+                REGEXP_EXTRACT(LineItem, r' - (\\w+)$') AS lineItemId
+              FROM `.SHEET_Control`
+              WHERE LineItem IS NOT NULL
+              AND Advertiser IS NOT NULL
+            )
+          )
+          QUALIFY MOD(num, 50) = 1"
+      }
+    },
+    "append": [{ 
+        "name": "advertiserId", 
+        "type": "INTEGER", 
+        "mode": "REQUIRED" 
+    }],
+    "results": {
+      "bigquery": {
+        "auth": "user",
+        "dataset": "Targeting",
+        "table": "DV360_LineItems_Targeting"
+      }
+    }
+  }},
+  { "bigquery": {
+    "description":"Create final View.",
+    "auth":"user",
+    "dataset": "Targeting",
+    "from": {
+      "query": "
+        WITH intermediateTable AS (
+          WITH ConsolidatedTable AS (
+            SELECT t1.displayName as lineItem,
+            t1.lineItemId,
+            t1.advertiserId,
+            t1.campaignId,
+            t2.assignedTargetingOption.ageRangeDetails.ageRange, 
+            t2.assignedTargetingOption.geoRegionDetails.displayName as geo,
+            t2.assignedTargetingOption.languageDetails.displayName as language
+            FROM `Targeting.DV360_LineItems` t1 
+            JOIN `Targeting.DV360_LineItems_Targeting` t2 
+            ON t1.lineItemId=t2.lineItemId
+          ),
+
+          tmp AS (
+            SELECT DISTINCT 
+              t1.lineItem, 
+              t1.lineItemId, 
+              t1.advertiserId, 
+              t1.campaignId, 
+              COALESCE(NULLIF(t1.ageRange,''), t2.ageRange) as age_range, 
+              COALESCE(NULLIF(t1.geo,''), t2.geo) as geo
+            FROM ConsolidatedTable t1 
+            JOIN ConsolidatedTable t2 
+            ON t1.lineItem=t2.lineItem
+          )
+
+          SELECT DISTINCT 
+            t3.lineItem, 
+            t3.lineItemId, 
+            t3.advertiserId, 
+            t3.campaignId, 
+            t3.age_range, 
+            t3.geo, 
+            COALESCE(NULLIF(t4.language,''), t4.language) as language
+          FROM tmp t3 
+          JOIN `ConsolidatedTable` t4 
+          ON t3.lineItem=t4.lineItem
+        )
+
+        SELECT DISTINCT lineItem, lineItemId, advertiserId, campaignId, age_range, geo
+        FROM `intermediateTable`
+        WHERE geo IS NOT NULL
+        AND (age_range LIKE '%18_24%'
+        OR age_range LIKE '%45_54%')
+        AND GEO NOT IN ('Switzerland','New York, United States', 'New York, NY, United States')"
+    },
+    "to": {
+      "dataset":"Targeting", 
+      "table":"FinalTable"
+    }     
+  }},
+  { "vertexai_api": {
+    "auth":"user",
+    "description":"generate text using gemini.",
+    "location":"us-central1",
+    "model":{
+      "class":"vertexai.preview.generative_models.GenerativeModel",
+      "name":"gemini-pro",
+      "function":"generate_content",
+      "type":"pretrained"
+    },
+    "destination":{
+      "bigquery":{
+        "dataset": "Targeting",
+        "table": "VERTEX_Text_Data_Gemini",
+        "schema":[
+          { "name": "URI", "type": "STRING", "mode": "REQUIRED" },
+          { "name": "Text", "type": "STRING", "mode": "REQUIRED" }
+        ]
+      }
+    },
+    "kwargs_remote": { 
+      "bigquery": {
+        "dataset": "Targeting",
+        "query": 
+          "SELECT 
+          CONCAT(advertiserId, '_', campaignId, '_', lineItemId, IF(age_range IS NOT NULL, CONCAT('_', REPLACE(age_range, 'AGE_RANGE_', ''), ''), ''), IF(geo IS NOT NULL, CONCAT('_', geo, ''), '')) AS uri,
+          STRUCT (
+            ARRAY_TO_STRING([
+              'In less than 50 characters, generate an extremely short one sentence ad copy for ', 
+              lineItem,
+              IF(FinalTable.age_range IS NOT NULL, CONCAT(' targeting people in the age range ', FinalTable.age_range),''),
+              IF(FinalTable.geo IS NOT NULL, CONCAT(' living in ', FinalTable.geo),''),
+              '. Make sure that your response is very short and contains less than 50 characters. Do not include hashtags or specific age groups in the ad copy. ',
+              'If the ad copy contains more than 50 characters, re-generate a new one with less than 50 characters.'
+            ], ' ', '') AS contents
+          ) AS parameters
+        FROM `FinalTable`"
+      }
+    }
+  }},
+  { "vertexai_api": {
+    "description":"Generate images.",
+    "auth":"user",
+    "location":"us-central1",
+    "model": {
+      "class":"vertexai.preview.vision_models.ImageGenerationModel",
+      "name":"imagegeneration@005",
+      "function":"generate_images",
+      "type":"pretrained",
+      "temperature": 5
+    },
+    "destination": {
+      "drive":"1RKuL2BMHZRtAVc0VWDis5cfLswFMectT"
+    },
+    "kwargs_remote": { 
+      "bigquery": {
+        "dataset": "Targeting",
+        "query": 
+          "SELECT 
+            CONCAT(advertiserId, '_', campaignId, '_', lineItemId, IF(age_range IS NOT NULL, CONCAT('_', REPLACE(age_range, 'AGE_RANGE_', ''), ''), ''), IF(geo IS NOT NULL, CONCAT('_', geo, ''), '')) AS uri,
+            STRUCT (
+              1 AS number_of_images,
+              2 AS seed,
+              ARRAY_TO_STRING([
+                'An outdoors photorealistic picture of a ', 
+                lineItem,
+                ' with unique colors taken from far ',
+                IF(FinalTable.geo IS NOT NULL, CONCAT('with a cool background of ', FinalTable.geo), '.')
+              ], ' ', '') AS prompt
+            ) AS parameters
+          FROM `FinalTable`"
+      }
+    }
+  }},
+  { "upload_assets": {
+    "auth": "user",
+    "upload": {
+      "drive_url": "https://drive.google.com/corp/drive/folders/1RKuL2BMHZRtAVc0VWDis5cfLswFMectT"
+    },
+    "destination": {
+      "bigquery": {
+        "dataset": "assets",
+        "table": "assets",
+        "schema": [
+          { "name": "name", "type": "STRING", "mode": "REQUIRED" },
+          { "name": "path", "type": "STRING", "mode": "REQUIRED" },
+          { "name": "media_id", "type": "STRING", "mode": "REQUIRED" }
+        ]
+      }
+    },
+    "kwargs_remote": { 
+      "bigquery": {
+        "dataset": "Targeting",
+        "query": 
+          "SELECT URI, Text FROM `VERTEX_Text_Data_Gemini`"
+      }
+    }
+  }}
+]}         
