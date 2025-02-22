@@ -18,6 +18,7 @@
 #
 ###########################################################################
 
+import copy
 import os
 import json
 import argparse
@@ -69,7 +70,7 @@ def main(
   text_ai = TextAI(config = config, auth = 'user')
 
   try:
-    with open('generated/ads.json', 'r') as file:
+    with open('generated/text_ads.json', 'r') as file:
       ads = json.load(file)
   except FileNotFoundError:
     ads = {}
@@ -89,6 +90,7 @@ def main(
           print('    EXISTS:', target_name)
         else:
           print('    AD:', target_name)
+          target = copy.deepcopy(target)
           target['PRODUCT'] = product['product'] + ' - ' + product['description']
 
           prompt_headlines = prompt_replace(prompt_format(spec['prompt']['headlines']) + ' ' + spec['pitches'][pitch]['prompt'], target)
@@ -102,7 +104,7 @@ def main(
             'headlines': text_ai.safely_generate_list(prompt=prompt_headlines),
             'descriptions': text_ai.safely_generate_list(prompt=prompt_descriptions)
           }
-          with open('generated/ads.json', "w") as file:
+          with open('generated/text_ads.json', "w") as file:
             json.dump(ads, file, indent=2)
 
 if __name__ == '__main__':

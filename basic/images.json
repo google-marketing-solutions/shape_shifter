@@ -17,10 +17,6 @@
       "file": "../docs/images/Vorato0007 542.jpg",
       "scenes": ["Road", "Landscape"]
     }, {
-      "image": "Red Back",
-      "file": "../docs/images/Vorato0007 547.jpg",
-      "scenes": ["Road", "Landscape"]
-    }, {
       "image": "Red Front",
       "file": "../docs/images/Vorato0007 572.jpg",
       "scenes": ["Road", "Landscape"]
@@ -31,51 +27,13 @@
     }
   ],
   "targeting": [
-    { "STATE": "Alabama", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "Alaska", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "Arizona", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Arkansas", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "California", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "Colorado", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Connecticut", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Delaware", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "Florida", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Georgia", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "Hawaii", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Idaho", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Illinois", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Indiana", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Iowa", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Kansas", "AUDIENCE": "Classic Car Collector" },
     { "STATE": "Kentucky", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Louisiana", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Maine", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Maryland", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Massachusetts", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Michigan", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Minnesota", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Mississippi", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Missouri", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Montana", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Nebraska", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Nevada", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "New Hampshire", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "New Jersey", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "New Mexico", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "New York", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "North Carolina", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "North Dakota", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Ohio", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Oklahoma", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Oregon", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Pennsylvania", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Rhode Island", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "South Carolina", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "South Dakota", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Tennessee", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Texas", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Utah", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Vermont", "AUDIENCE": "Classic Car Collector" },
-    { "STATE": "Virginia", "AUDIENCE": "Classic Car Collector" }
+    { "STATE": "Utah", "AUDIENCE": "Classic Car Collector" }
   ]
 }

@@ -62,31 +62,42 @@ def main(
   )
 
   image_ai = ImageAI(config = config, auth = 'user')
+  ads = {}
 
   with open(prompts, 'r') as file:
     spec = json.load(file)
 
   for image in spec['images']:
+    ads.setdefault(image['image'], {})
     print('IMAGE:', image['image'])
     local_image =  Image.load_from_file(image['file'])
     for scene in image['scenes']:
+      ads[image['image']].setdefault(scene, {})
       print('  SCENE:', scene)
       for target in spec['targeting']:
         target_name = " - ".join(f"{key}:{value}" for key, value in target.items())
+        ads[image['image']][scene].setdefault(target_name, [])
         ai = {
           'prompt':prompt_replace(spec['prompt'] + ' ' + spec['scenes'][scene]['prompt'], target),
           'file':f'{image["image"]} - {scene} - {target_name}'
         }
-        if os.path.exists(f'generated/{ai["file"]} - 1.jpg'):
-          print('    EXISTS: ', f'generated/{ai["file"]} - ?.jpg')
+        filename = f'generated/{ai["file"]} - 1.jpg'
+        if os.path.exists(filename):
+          ads[image['image']][scene][target_name].append(filename)
+          print('    EXISTS: ', f'generated/{ai["file"]} - 1.jpg')
         else:
           for variant, ai_image in enumerate(image_ai.safely_edit_image(
             prompt = ai['prompt'],
             base_image = local_image
           ), 1):
             filename = f'generated/{ai["file"]} - {variant}.jpg'
+            ads[image['image']][scene][target_name].append(filename)
             ai_image.save(filename)
             print('    FILE:', filename)
+
+        with open('generated/image_ads.json', "w") as file:
+          json.dump(ads, file, indent=2)
+
 
 if __name__ == '__main__':
 

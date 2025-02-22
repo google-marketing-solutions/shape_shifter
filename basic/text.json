@@ -15,7 +15,7 @@
        "      * Questions.",
        "      * Benefit-oriented statements.",
        "      * Location-specific phrases.",
-       "Format the response using a Python list of strings in the format: ['headline...', 'headline...',]"
+       "Format the response using a Python list of strings in the format: [\"headline...\", \"headline...\",]"
     ],
     "descriptions": [
       "You are a Google Ads expert specializing in writing high-performing ad copy for the automotive industry. Your task is to generate 5 distinct Google Ads descriptions for a car being sold in STATE. The car is described as follows: PRODUCT.",
@@ -26,7 +26,7 @@
       "* **No promotional phrases related to prices, promotions, and financing:** These are best left to ad extensions.",
       "* **Avoid excessive capitalization:** ONLY capitalize the first letter and proper nouns.",
       "* **Variety:** Provide a variety of description styles.",
-      "Format the response using a Python list of strings in the format: ['headline...', 'headline...',]"
+      "Format the response using a Python list of strings in the format: [\"headline...\", \"headline...\",]"
     ]
   },
   "pitches":{
@@ -52,51 +52,11 @@
     }
   ],
   "targeting": [
-    { "STATE": "Alabama", "AUDIENCE": "First Time Buyer" },
     { "STATE": "Alaska", "AUDIENCE": "First Time Buyer" },
     { "STATE": "Arizona", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Arkansas", "AUDIENCE": "First Time Buyer" },
     { "STATE": "California", "AUDIENCE": "First Time Buyer" },
     { "STATE": "Colorado", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Connecticut", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Delaware", "AUDIENCE": "First Time Buyer" },
     { "STATE": "Florida", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Georgia", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Hawaii", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Idaho", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Illinois", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Indiana", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Iowa", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Kansas", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Kentucky", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Louisiana", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Maine", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Maryland", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Massachusetts", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Michigan", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Minnesota", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Mississippi", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Missouri", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Montana", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Nebraska", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Nevada", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "New Hampshire", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "New Jersey", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "New Mexico", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "New York", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "North Carolina", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "North Dakota", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Ohio", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Oklahoma", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Oregon", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Pennsylvania", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Rhode Island", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "South Carolina", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "South Dakota", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Tennessee", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Texas", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Utah", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Vermont", "AUDIENCE": "First Time Buyer" },
-    { "STATE": "Virginia", "AUDIENCE": "First Time Buyer" }
+    { "STATE": "Oregon", "AUDIENCE": "First Time Buyer" }
   ]
 }

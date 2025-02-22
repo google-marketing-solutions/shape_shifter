@@ -3,6 +3,15 @@
 This is a simple Python implementation using JSON to construct the prompts.
 The JSON files become assets you can keep for specific campaigns.
 
+## BQFlow Dependency
+
+To reduce the amount of custom code, the solution leverages BQFlow AI helpers.
+
+```
+git clone https://github.com/google/bqflow
+python3 -m pip install -r bqflow/requirements.txt
+export PYTHONPATH=$PYTHONPATH:/$PWD/bqflow
+```
 
 ## Text
 
@@ -16,7 +25,7 @@ If you want to modify the behavior of the AI please see the BQFlow modules.
 python text.py text.json -p [GCP PROJECT] -u ~user.json -v
 ```
 
-Results are in: **generated/ads.json**
+Results are in: **generated/text_ads.json**
 
 ### JSON Prompt File
 
@@ -101,6 +110,7 @@ The resulting images go into the **generated** folder.  The program checks
 for images that already exist and skips asking the AI for those. They have the
 following format:
 
+generated/image_ads.json
 generated/IMAGE - SCENE - TARGETING - VARIANT.jpg
 
 - IMAGE, SCENE, TARGETING are from the JSON file.
