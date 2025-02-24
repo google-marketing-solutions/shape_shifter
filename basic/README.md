@@ -13,6 +13,11 @@ python3 -m pip install -r bqflow/requirements.txt
 export PYTHONPATH=$PYTHONPATH:/$PWD/bqflow
 ```
 
+## Running The Colab
+
+For a step by step execution of the basic demo, run the
+[shape_shifter_basic.ipynb](shape_shifter_basic.ipynb) colab notebook.
+
 ## Text
 
 Used to generate advertising copy from JSON files.
