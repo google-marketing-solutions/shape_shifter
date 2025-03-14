@@ -16,9 +16,10 @@ using Google AI.  It is useful for:
   4. Device type.
   5. Or any other source of data.
 
-There are two parts to this code:
+There are three parts to this code:
 
 1. **Demo** - Shows a cool globe of various products rendered with different backgrounds base don country.
+1. **Basic** - Showcases text and image generation for specific products using configuration files.
 1. **Workflow** - The logic that connects to **DV360** and/or **Google Ads** and generates ads from targeting.
 
 # Demo
@@ -73,7 +74,12 @@ python ../bqflow/run.py demo/cbalm.json -u ~user.json -p gcp-project -v
 python demo/ads.py 
 ```
 
-# Product Workflows
+# Basic
+
+Great starter kit for developing basic text and image advertising campaigns 
+View the [README](basic/README.md).
+
+# Workflows
 
 Generate ads from campaign targeting with minimal overhead.
 
