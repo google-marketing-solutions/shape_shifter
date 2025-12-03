@@ -1,0 +1,117 @@
+swagger: "2.0"
+info:
+  title: SA360 Data Query API
+  description: API for querying and retrieving SA360 data and fields.
+  version: "1.0.0"
+x-google-backend:
+  address: https://acme.com
+basePath: "/" # Added basepath
+paths:
+  "/create-product-background":
+    post:
+      operationId: create-product-background
+      summary: Alters the image based on input
+      description: >
+        
+      parameters:
+        - in: body
+          name: image_src
+          required: true
+          type: string
+          description: >
+            A path (after the bucket) to a file in cloud storage.
+
+            Currently only GCS is supported.
+
+        - in: body
+          name: targets
+          required: true
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: string
+          description: >
+            A list of targets. Each item in the list will result in an output image.
+
+        - in: body
+          name: aspect_ratio
+          required: true
+          type: string
+          enum: ["square", "16:9", "9:16", "4:3", "3:4"]
+          default: "square"
+          description: >
+            The desired aspect ratio of the image to output.
+
+        - in: header
+          name: STORAGE_BUCKET
+          required: true
+          type: string
+          description: >
+            The URL of the storage bucket.
+
+            Currently only GCS URLs are supported.
+
+      security:
+        - Authorization: []
+      responses:
+        '200':
+          type: array
+          items:
+            type: string
+            description: An `image_src` saved in the `STORAGE_BUCKET` under `output/YYYYMMDDHHmmSS/`
+
+  "/change-color":
+    post:
+      operationId: change-color
+      summary: Changes the color of the product to the desired color(s).
+      description: >
+        
+      parameters:
+        - in: body
+          name: image_src
+          required: true
+          type: string
+          description: >
+            A path (after the bucket) to a file in cloud storage.
+
+            Currently only GCS is supported.
+
+        - in: body
+          name: product_target
+          required: false
+          type: string
+          description: The name of the item to change color. If the background is transparent, you can omit this.
+
+        - in: body
+          name: colors
+          required: true
+          type: array
+          items:
+            type: string
+          description: >
+            A list of colors. Each color in the list will result in an output image.
+
+        - in: header
+          name: STORAGE_BUCKET
+          required: true
+          type: string
+          description: >
+            The URL of the storage bucket.
+
+            Currently only GCS URLs are supported.
+
+      security:
+        - Authorization: []
+      responses:
+        '200':
+          type: array
+          items:
+            type: string
+            description: An `image_src` saved in the `STORAGE_BUCKET` under `output/YYYYMMDDHHmmSS/`
+securityDefinitions:
+  X-OAuth:
+    type: apiKey
+    in: header
+    name: Authorization
+

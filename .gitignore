@@ -1,4 +1,8 @@
 .DS_Store
 *.pyc
 *.swp
-__pycache__
+**/__pycache__/*
+**/venv/*
+**/*cache/*
+notebooks/shape_shifter
+*plan.md

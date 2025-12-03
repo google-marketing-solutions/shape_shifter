@@ -1,0 +1,10 @@
+click
+google-cloud-aiplatform
+google-cloud-storage
+protobuf
+dirtyjson
+grpcio-tools
+ruff>=0.14.7
+google-genai>=1.52.0
+pandas>=2.3.3
+pillow>=12.0.0

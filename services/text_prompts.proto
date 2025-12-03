@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package shape_shifter.services;
+
+message PitchInfo {
+  string prompt = 1;
+}
+
+message Product {
+  string product = 1;
+  string description = 2;
+  repeated string pitches = 3;
+}
+
+message Targeting {
+  map<string, string> attributes = 1;
+}
+
+message TextPrompts {
+  message Prompt {
+    repeated string headlines = 1;
+    repeated string descriptions = 2;
+  }
+  Prompt prompt = 1;
+  map<string, PitchInfo> pitches = 2;
+  repeated Product products = 3;
+  repeated Targeting targeting = 4;
+}
