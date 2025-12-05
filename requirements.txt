@@ -1,1 +1,8 @@
 dirtyjson
+protobuf
+google-cloud-storage
+google-cloud-aiplatform
+grpcio-tools
+click
+google-generativeai
+pydantic
